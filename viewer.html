@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>HLS Player</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 20px;
+        background-color: #f0f0f0;
+      }
+
+      .container {
+        max-width: 800px;
+        margin: 0 auto;
+        background-color: white;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      }
+
+      h1 {
+        text-align: center;
+        color: #333;
+        margin-bottom: 30px;
+      }
+
+      .video-container {
+        width: 100%;
+        margin-bottom: 20px;
+      }
+
+      video {
+        width: 100%;
+        height: auto;
+        border-radius: 4px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1 id="page-title">HLS Player</h1>
+
+      <div class="video-container">
+        <video id="video" controls></video>
+      </div>
+    </div>
+
+    <!-- hls.js CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+
+    <script>
+      const video = document.getElementById("video");
+
+      const urlParams = new URLSearchParams(window.location.search);
+      const src = urlParams.get("src");
+      const title = urlParams.get("title");
+
+      if (title) {
+        document.title = title;
+        document.getElementById("page-title").textContent = title;
+      } else {
+        document.title = "HLS Player";
+        document.getElementById("page-title").textContent = "HLS Player";
+      }
+
+      if (!src) {
+        throw new Error(
+          "動画ソースが指定されていません。URLにsrcパラメータを追加してください。"
+        );
+      }
+
+      if (Hls.isSupported()) {
+        // hls.js を使用してHLS動画を再生
+        const hls = new Hls();
+        hls.loadSource(src);
+        hls.attachMedia(video);
+
+        hls.on(Hls.Events.ERROR, (event, data) => {
+          console.error("hls.jsでエラーが発生しました:", data);
+        });
+      } else if (video.canPlayType("application/vnd.apple.mpegurl")) {
+        // Safari等のネイティブHLSサポートブラウザ
+        video.src = src;
+        video.addEventListener("error", (e) => {
+          console.error("動画の読み込みに失敗しました。", e);
+        });
+      } else {
+        throw new Error("このブラウザはHLS再生をサポートしていません。");
+      }
+    </script>
+  </body>
+</html>
