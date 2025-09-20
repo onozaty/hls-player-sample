@@ -6,7 +6,12 @@ RUN apt-get update && apt-get install -y \
     wget \
     git \
     vim \
-    ffmpeg
+    ffmpeg \
+    nginx
 
 RUN echo "ubuntu ALL=(root) NOPASSWD:ALL" > /etc/sudoers.d/ubuntu \
     && chmod 0440 /etc/sudoers.d/ubuntu
+
+# nginx config
+COPY nginx/default.conf /etc/nginx/sites-available/default
+RUN ln -sf /etc/nginx/sites-available/default /etc/nginx/sites-enabled/default

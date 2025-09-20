@@ -4,6 +4,7 @@
     "dockerfile": "./Dockerfile"
   },
   "remoteUser": "ubuntu",
+  "postStartCommand": "sudo service nginx start",
   "customizations": {
     "vscode": {
       "extensions": [
