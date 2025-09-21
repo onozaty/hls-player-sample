@@ -5,6 +5,7 @@
   },
   "remoteUser": "ubuntu",
   "postStartCommand": "sudo service nginx start",
+  "forwardPorts": [8080],
   "customizations": {
     "vscode": {
       "extensions": [
