@@ -28,6 +28,8 @@ sh create-sample-movie.sh
 
 - http://localhost:8080/viewer.html?src=sample-movie/BigBuckBunny_320x180.m3u8&title=Big%20Buck%20Bunny
 
+<img src="./screen-capture.png" alt="screen-capture" width="600"/>
+
 ## mp4 -> HLS 変換
 
 DevContanerにはffmpegがインストールされているので、下記コマンドでmp4ファイルをHLS形式に変換できます。
