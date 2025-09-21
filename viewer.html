@@ -6,7 +6,7 @@
     <title>HLS Player</title>
     <style>
       body {
-        font-family: Arial, sans-serif;
+        font-family: "Noto Sans JP", Arial, sans-serif;
         margin: 0;
         padding: 20px;
         background-color: #f0f0f0;
@@ -29,7 +29,6 @@
 
       .video-container {
         width: 100%;
-        margin-bottom: 20px;
       }
 
       video {
@@ -53,7 +52,8 @@
     <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
 
     <script>
-      const video = document.getElementById("video");
+      const videoElm = document.getElementById("video");
+      const pageTitleElm = document.getElementById("page-title");
 
       const urlParams = new URLSearchParams(window.location.search);
       const src = urlParams.get("src");
@@ -61,10 +61,10 @@
 
       if (title) {
         document.title = title;
-        document.getElementById("page-title").textContent = title;
+        pageTitleElm.textContent = title;
       } else {
         document.title = "HLS Player";
-        document.getElementById("page-title").textContent = "HLS Player";
+        pageTitleElm.style.display = "none";
       }
 
       if (!src) {
@@ -77,15 +77,15 @@
         // hls.js を使用してHLS動画を再生
         const hls = new Hls();
         hls.loadSource(src);
-        hls.attachMedia(video);
+        hls.attachMedia(videoElm);
 
         hls.on(Hls.Events.ERROR, (event, data) => {
           console.error("hls.jsでエラーが発生しました:", data);
         });
-      } else if (video.canPlayType("application/vnd.apple.mpegurl")) {
+      } else if (videoElm.canPlayType("application/vnd.apple.mpegurl")) {
         // Safari等のネイティブHLSサポートブラウザ
-        video.src = src;
-        video.addEventListener("error", (e) => {
+        videoElm.src = src;
+        videoElm.addEventListener("error", (e) => {
           console.error("動画の読み込みに失敗しました。", e);
         });
       } else {
